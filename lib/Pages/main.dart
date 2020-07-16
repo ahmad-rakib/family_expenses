@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:family_expenses/profile.dart';
+import 'package:family_expenses/Pages/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
