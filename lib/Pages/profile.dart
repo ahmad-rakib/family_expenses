@@ -1,3 +1,4 @@
+import 'package:family_expenses/Pages/family.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -125,13 +126,18 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                   margin: EdgeInsets.only(left:12.0),
                   child: Column(
                     children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(FlutterIcons.ios_people_ion,color:  Color(0xFFE5E4E2).withOpacity(0.8),size: 36,),
-                          SizedBox(width: 5,),
-                          Text('Family', style: TextStyle(fontSize: 20,color: Color(0xFFE5E4E2).withOpacity(0.8) ),),
-                        ],
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>FamilyMember()));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(FlutterIcons.ios_people_ion,color:  Color(0xFFE5E4E2).withOpacity(0.8),size: 36,),
+                            SizedBox(width: 5,),
+                            Text('Family', style: TextStyle(fontSize: 20,color: Color(0xFFE5E4E2).withOpacity(0.8) ),),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20,),
                       Row(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:family_expenses/Pages/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -288,13 +289,18 @@ class _HomePageState extends State<Home> with SingleTickerProviderStateMixin{
                               //color: Colors.purple[900],
                               borderRadius: BorderRadius.all(Radius.circular(20)),
                             ),
-                            child: Text(
-                              "Login  ",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.push(context,MaterialPageRoute(builder: (context)=>Profile()));
+                              },
+                              child: Text(
+                                "Login  ",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
                           SizedBox(

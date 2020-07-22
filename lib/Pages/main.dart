@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:family_expenses/Pages/profile.dart';
+import 'package:family_expenses/Pages/family.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'registration.dart';
-import 'package:family_expenses/Animation/FadeAnimation.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +15,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
-      //home: MyHomePage(),
     );
   }
 }
