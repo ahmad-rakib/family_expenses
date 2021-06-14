@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "85470172074",
+    "project_id": "family-expenses-192dc",
+    "storage_bucket": "family-expenses-192dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85470172074:android:282aee26a252d1c4a111d3",
+        "android_client_info": {
+          "package_name": "com.example.family_expenses"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85470172074-ockc2p04uvqvg50ugop4uriod4tvj1gv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.family_expenses",
+            "certificate_hash": "0af00998f07f91356528d2173001f9c02c0b36d7"
+          }
+        },
+        {
+          "client_id": "85470172074-57s7hseidnp9cki23p8ub5t91159olq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYidu4vsbiAA9sulCPudkrcqWcS2b3cx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85470172074-57s7hseidnp9cki23p8ub5t91159olq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

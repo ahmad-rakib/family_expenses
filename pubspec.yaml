@@ -14,14 +14,21 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:  
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   simple_animations: ^2.2.1
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.0
   flutter_icons: ^1.1.0
+  charts_flutter: ^0.10.0
+  table_calendar: ^2.2.3
+  scrolling_years_calendar: ^1.2.1
+  firebase_core: ^1.1.1
+  firebase_database: ^6.1.2
+  cloud_firestore: ^2.1.0
+  firebase_auth: ^1.1.4
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -68,6 +75,9 @@ flutter:
     - family: Teko
       fonts:
         - asset: fonts/Teko-Regular.ttf
+    - family: YanoneKaffeesatz
+      fonts:
+        - asset: fonts/YanoneKaffeesatz-Regular.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
