@@ -16,7 +16,7 @@ class UserAuthentication{
     return user != null ? user.uid : null;
   }
 
-Future registerNewUser(String firstName, String lastName, String gender, String age, String address, String phoneNumber, String email, String password) async {
+Future registerNewUser(String firstName, String lastName, String gender, String age, String address, String phoneNumber, String email, String password,String image) async {
   try {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -24,7 +24,7 @@ Future registerNewUser(String firstName, String lastName, String gender, String 
     );
     User user=userCredential.user;
     print(user.uid);
-    await UpdateUserData(uid: user.uid).addUser(firstName, lastName, gender, age, address, phoneNumber);
+    await UpdateUserData(uid: user.uid).addUser(firstName, lastName, gender, age, email, address, phoneNumber,image);
     return _userFromFirebaseUser(user);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {

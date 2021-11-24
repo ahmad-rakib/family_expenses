@@ -39,8 +39,8 @@ class _FamilyMemberState extends State<FamilyMember> {
                 height: maxHeight*.65,
                 width: maxWidth*.9,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15))
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(15))
                 ),
               ),
             ],

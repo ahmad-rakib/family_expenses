@@ -14,13 +14,13 @@ List<String> total=['56000', '70020', '48000'];
 
 
 
-class DailyExpenses extends StatefulWidget{
+class ShowDailyExpenses extends StatefulWidget{
   @override
   DExpenses createState()=>DExpenses();
   
 }
 
-class DExpenses extends State<DailyExpenses>{
+class DExpenses extends State<ShowDailyExpenses>{
   @override
   Widget build(BuildContext context) {
     return Container(

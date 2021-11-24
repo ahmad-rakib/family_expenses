@@ -1,8 +1,5 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:family_expenses/DataBase/database_Auth.dart';
-import 'package:family_expenses/Pages/family.dart';
+import 'package:family_expenses/Pages/userProfile.dart';
 import 'package:family_expenses/Pages/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,26 +8,35 @@ import 'package:family_expenses/Pages/expenses.dart';
 import 'package:family_expenses/Widget/RecentExpense.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Profile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ProfilePage(),
-    );
-  }
-}
+import 'income.dart';
+
 
 class ProfilePage extends StatefulWidget{
+
+  final String name, image;
+
+  ProfilePage(this.name,this.image);
+
   @override
-  _ProfilePageState createState()=> _ProfilePageState();
+  _ProfilePageState createState()=> _ProfilePageState(name,image);
 }
 
 class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderStateMixin{
   bool isMenuOpen = true;
-  String userUid;
+  String userUid, email;
+  final String name, image;
+
+  DateTime now= new DateTime.now();
+
+  List _selectMonth=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  List _weekDay=['Mon','Tus','Wed','Thu','Fri','Sat','Sun'];
+
+  _ProfilePageState(this.name, this.image);
+
   User auth=FirebaseAuth.instance.currentUser;
+
+  Map<String, dynamic> userData;
 
 
 
@@ -44,8 +50,6 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
   @override
   void initState() {
     super.initState();
-    //userUid=auth.uid;
-    //print(userUid);
     FirebaseAuth.instance
         .authStateChanges()
         .listen((User user) {
@@ -54,8 +58,21 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
       } else {
        userUid=user.uid;
        print(userUid);
+
+       FirebaseFirestore.instance.collection('users').doc(userUid).get()
+           .then((DocumentSnapshot documentSnapshot) {
+         if(documentSnapshot.exists)
+         {
+           userData = documentSnapshot.data() as Map<String, dynamic>;
+           //name=userData['FirstName']+' '+userData['LastName'];
+         }
+       });
       }
     });
+
+
+
+
     _controller = AnimationController(vsync: this, duration: duration);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.7).animate(_controller);
     _menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
@@ -144,7 +161,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                     children: <Widget>[
                       InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>FamilyMember()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>UserProfile(userData['FirstName'],userData['LastName'],userData['Age'],userData['Gender'],userData['Address'],userData['Phone'],userData['Email'],userData['Image'])));
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +175,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                       SizedBox(height: 20,),
                       InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>FamilyExpenses()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Expenses()));
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,13 +187,19 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                         ),
                       ),
                       SizedBox(height: 20,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(FlutterIcons.money_bill_faw5s,color: Colors.white,size: 18,),
-                          SizedBox(width: 12),
-                          Text('Income', style: TextStyle(fontSize: 20,color: Colors.white, fontFamily: 'Teko'),),
-                        ],
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Income()));
+                        },
+
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(FlutterIcons.money_bill_faw5s,color: Colors.white,size: 18,),
+                            SizedBox(width: 12),
+                            Text('Income', style: TextStyle(fontSize: 20,color: Colors.white, fontFamily: 'Teko'),),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20,),
                       Row(
@@ -271,6 +294,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 25),
                    child: Row(
                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     crossAxisAlignment: CrossAxisAlignment.center,
                      children: <Widget>[
                        isMenuOpen?IconButton(
                          onPressed: () {
@@ -279,7 +303,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                              isMenuOpen=false;
                            });
                          },
-                         icon: Icon(Icons.menu,size: 26,),
+                         icon: Icon(Icons.menu,size: 26,color: Colors.white,),
                        ):IconButton(
                          onPressed: () {
                            setState(() {
@@ -290,8 +314,10 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                          icon: Icon(Icons.arrow_back_ios,size: 26,),
                        ),
                        Row(
+                         crossAxisAlignment: CrossAxisAlignment.center,
+                         mainAxisAlignment: MainAxisAlignment.center,
                          children: [
-                           _userName(userUid),
+                           Text(name,style: TextStyle(fontSize: 28,fontFamily: 'Teko',color:Colors.white)),
                            Container(
                              width:60,
                              height: 60,
@@ -305,7 +331,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                                ],
                              ),
                              child: Image(
-                               image: AssetImage('assets/images/male_user.png'),
+                               image: AssetImage('assets/images/'+image),
                                fit: BoxFit.fill,
                              ),
                            ),
@@ -384,10 +410,10 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                              children: <Widget>[
                                Align(
                                    alignment:Alignment.centerLeft,
-                                   child: Text('Sun',style: TextStyle(fontSize: 30,color: Colors.grey,fontFamily: 'Teko'))),
+                                   child: Text(_weekDay[now.weekday-1],style: TextStyle(fontSize: 30,color: Colors.grey,fontFamily: 'Teko'))),
                                Align(
                                    alignment:Alignment.centerLeft,
-                                   child: Text('June 28,2020',style: TextStyle(fontSize: 20,color: Colors.grey,fontFamily: 'Teko'))),
+                                   child: Text('${now.day}'+' '+_selectMonth[now.month-1]+','+' '+'${now.year}',style: TextStyle(fontSize: 20,color: Colors.grey,fontFamily: 'Teko'))),
                              ],
                            ),
                          ),
@@ -421,8 +447,8 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                        child: Text('Daily expenses', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
                  ),
                  Container(
-                     height:225,
-                     child: DailyExpenses()),
+                     height:200,
+                     child: ShowDailyExpenses()),
                  SizedBox(height:5,),
                  Padding(
                    padding: const EdgeInsets.only(left:15),
@@ -431,7 +457,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                        child: Text('Monthly expenses', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
                  ),
                  Container(
-                     height:225,
+                     height:200,
                      child: MonthlyExpenses())
 
 
@@ -444,32 +470,6 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
    );
  }
 
-  _userName(String uid) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-    return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(uid).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
-
-        if (snapshot.hasData && !snapshot.data.exists) {
-          return Text("!!!!!");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data.data();
-          return Text("${data['FirstName']} ${data['LastName']}",style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.w500, fontFamily: 'Teko'),);
-        }
-
-        return Text("Loading");
-      },
-    );
-
-  }
 }
 
 
