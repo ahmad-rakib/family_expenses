@@ -22,7 +22,8 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
 
   final formKey= GlobalKey<FormState>();
   String date, error, day, month, year, userUid, id;
-  String conveyance, shopping , medical, grocery, maintenance,others;
+  String conveyance='0', shopping='0', medical='0', grocery='0', food='0', maintenance='0',others='0';
+
 
 
   UpdateUserData _dailyExpenses=UpdateUserData();
@@ -60,11 +61,42 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
             children: [
               Column(
                   children:<Widget> [
-                    SizedBox(
-                      height :15,
+                    SizedBox(height: 15,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap:(){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>DailyExpenses()));
+                              //Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage(userData['FirstName']+' '+userData['LastName'], userData['Image'])));
+                            },
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              height: 40,
+                              width: 35,
+                              margin: EdgeInsets.only(left: 5),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(flex:9,child: Text('Store Daily Expenses',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 1), fontFamily: 'Teko'),)),
+                        Expanded(
+                          flex: 1,
+                          child: Container(),
+                        )
+                      ],
                     ),
-                    Text("Store Daily Expenses",style: TextStyle(fontSize: 36, fontFamily: 'Teko',color: Color.fromRGBO(25, 25, 112, 1)),),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 15,),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25),
                       child: Row(
@@ -250,6 +282,7 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
                               color: Color.fromRGBO(  35, 44, 155 , 1),
                               size: 24,
                             )),
+                          //controller: TextEditingController(text: '0'),
                           validator: (val) {
                           final pattern = '[0-9]+';
                           final regExp = RegExp(pattern);
@@ -308,6 +341,7 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
                               color: Color.fromRGBO(  35, 44, 155 , 1),
                               size: 24,
                             )),
+                        //controller: TextEditingController(text: '0'),
                         validator: (val) {
                           final pattern = '[0-9]+';
                           final regExp = RegExp(pattern);
@@ -424,6 +458,7 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
                               color: Color.fromRGBO(  35, 44, 155 , 1),
                               size: 24,
                             )),
+                        //controller: TextEditingController(text: '0'),
                         validator: (val) {
                           final pattern = '[0-9]+';
                           final regExp = RegExp(pattern);
@@ -444,6 +479,66 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
                     ),
                     SizedBox(
                       height :10,
+                    ),
+
+                    SizedBox(
+                      height :10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25,vertical: 10),
+                      child: TextFormField(
+                        textAlign: TextAlign.start,
+                        keyboardType: TextInputType.text,
+                        cursorColor:Color.fromRGBO(  35, 44, 155 , 1),
+                        style: TextStyle(
+                            color: Color.fromRGBO(  35, 44, 155 , 1),
+                            fontSize: 20),
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white54,
+                            focusedBorder:  OutlineInputBorder(
+                                borderRadius: BorderRadius.circular( 10),
+                                borderSide:BorderSide(color: Color.fromRGBO(  35, 44, 155 , 1),width: 2)
+                            ),
+                            enabledBorder:  OutlineInputBorder(
+                                borderRadius: BorderRadius.circular( 10),
+                                borderSide:BorderSide(color: Color.fromRGBO(  35, 44, 155 , 1),width: 2)
+                            ),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:BorderSide(color: Colors.red.shade900,width: 2)
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:BorderSide(color: Colors.green.shade700,width: 2)
+                            ),
+                            labelText: 'Food',
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromRGBO(  35, 44, 155 , 1)),
+                            prefixIcon: Icon(
+                              Icons.fastfood_outlined,
+                              color: Color.fromRGBO(  35, 44, 155 , 1),
+                              size: 24,
+                            )),
+                        //controller: TextEditingController(text: '0'),
+                        validator: (val) {
+                          final pattern = '[0-9]+';
+                          final regExp = RegExp(pattern);
+
+                          if (val.isEmpty) {
+                            return 'Amount cannot be empty';
+                          } else if (!regExp.hasMatch(val)) {
+                            return 'Amount can only be digit';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onChanged: (val) {
+                          setState(() => food = val);
+                        },
+
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25,vertical: 10),
@@ -482,6 +577,7 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
                               color: Color.fromRGBO(  35, 44, 155 , 1),
                               size: 24,
                             )),
+                        //controller: TextEditingController(text: '0'),
                         validator: (val) {
                           final pattern = '[0-9]+';
                           final regExp = RegExp(pattern);
@@ -540,6 +636,7 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
                               color: Color.fromRGBO(  35, 44, 155 , 1),
                               size: 24,
                             )),
+                        //controller: TextEditingController(text: '0'),
                         validator: (val) {
                           final pattern = '[0-9]+';
                           final regExp = RegExp(pattern);
@@ -570,7 +667,7 @@ class _CreateDailyExpense extends State<AddDailyExpenses>{
                         if(isValid)
                         {
                           formKey.currentState.save();
-                          dynamic result= await _dailyExpenses.addDailyExpense(date, conveyance, shopping, medical, grocery, maintenance, others, userUid, id, day, month, year);
+                          dynamic result= await _dailyExpenses.addDailyExpense(date, conveyance, shopping, medical, grocery, food, maintenance, others, userUid, id, day, month, year);
                           if(result == null) {
                             setState(() {
                               error = 'Could not sign in with those credentials';});

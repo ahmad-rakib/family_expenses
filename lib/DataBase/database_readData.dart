@@ -2,17 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReadData{
 
-  final CollectionReference dailyDataRef= FirebaseFirestore.instance.collection('daily_expenses');
-
-
-  final CollectionReference monthlyDataRef= FirebaseFirestore.instance.collection('monthly_expenses');
 
   final CollectionReference userDataRef=FirebaseFirestore.instance.collection('users');
 
 
 
-  Future readDailyData(String id, String month, String year)
+  Future readDailyData(String ref, String id, String month, String year)
   async{
+
+    CollectionReference dailyDataRef= FirebaseFirestore.instance.collection(ref);
+
     List itemsList = [];
 
     try {
@@ -30,8 +29,10 @@ class ReadData{
 
 
 
-  Future readMonthlyData(String id, String year)
+  Future readMonthlyData(String ref,String id, String year)
   async{
+
+    final CollectionReference monthlyDataRef= FirebaseFirestore.instance.collection(ref);
     List itemsList = [];
 
     try {

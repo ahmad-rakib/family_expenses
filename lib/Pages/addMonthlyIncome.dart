@@ -61,10 +61,41 @@ class _AddMonthlyIncome extends State<AddMonthlyIncome>{
             children: [
               Column(
                   children:<Widget> [
-                    SizedBox(
-                      height :15,
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap:(){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MonthlyIncome()));
+                              //Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage(userData['FirstName']+' '+userData['LastName'], userData['Image'])));
+                            },
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              height: 40,
+                              width: 35,
+                              margin: EdgeInsets.only(left: 5),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(flex:9,child: Text('Store Monthly Income',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 1), fontFamily: 'Teko'),)),
+                        Expanded(
+                          flex: 1,
+                          child: Container(),
+                        )
+                      ],
                     ),
-                    Text("Store Monthly Income",style: TextStyle(fontSize: 36, fontFamily: 'Teko',color: Color.fromRGBO(25, 25, 112, 1)),),
                     SizedBox(height: 10,),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25),

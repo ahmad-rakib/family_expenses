@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:family_expenses/DataBase/database_readData.dart';
 import 'package:family_expenses/Pages/addMonthlyIncome.dart';
-import 'package:family_expenses/Pages/showDailyExpensesDetails.dart';
+import 'package:family_expenses/Pages/income.dart';
+import 'package:family_expenses/Pages/showMonthlyIncomeDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +17,9 @@ class MonthlyIncomeState extends State<MonthlyIncome>{
   List _selectYear=['2020' ,'2021' ,'2022' ,'2023' ,'2024' ,'2025' ,'2026' ,'2027' ,'2028' ,'2029' ,'2030' ,'2031' ,'2032' ,'2033' ,'2034' ,'2035' ,'2036' ,'2037' ,'2038' ,'2039' ,'2040' ,'2041' ,'2042' ,'2043' ,'2044' ,'2045' ,'2046' ,'2047' ,'2048' ,'2049' ,'2050'];
 
   List monthlyData=[];
+
+
+  List lineDataList=[];
 
   String error, month, year, userUid;
 
@@ -38,8 +45,42 @@ class MonthlyIncomeState extends State<MonthlyIncome>{
         child: SafeArea(
           child: Column(
             children: [
-              Text('Monthly Income'
-                  '',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 1), fontFamily: 'Teko'),),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Income()));
+                        //Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage(userData['FirstName']+' '+userData['LastName'], userData['Image'])));
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 40,
+                        width: 35,
+                        margin: EdgeInsets.only(left: 5),
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.blueGrey,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(flex:9,child: Text('Monthly Income',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 1), fontFamily: 'Teko'),)),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  )
+                ],
+              ),
+              SizedBox(height: 5,),
               Container(
                 //color: Colors.black,
                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -105,7 +146,7 @@ class MonthlyIncomeState extends State<MonthlyIncome>{
                               child: Icon(Icons.search_sharp,size: 30, color: Colors.white,),
                               onPressed: (){
                                 //print(month +" "+ year);
-                                //monthlyExpensesDataList(userUid,year);
+                                monthlyExpensesDataList(userUid,year);
                               },
                               //color: Colors.deepOrange.shade500,
                               color: Colors.deepOrange,
@@ -132,7 +173,16 @@ class MonthlyIncomeState extends State<MonthlyIncome>{
                       return Card(
                         child:  ListTile(
                           onTap: (){
-                            //Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowDailyDetails("userId",monthlyData[index]['Id'], month, year)));
+                            weeklyData(userUid, monthlyData[index]['Month'], year);
+                            print(monthlyData[index]['Salary']);
+                            print(monthlyData[index]['Business']);
+                            print(monthlyData[index]['House Rent']);
+                            print(monthlyData[index]['Car Rent']);
+                            print(monthlyData[index]['Interest']);
+                            print(monthlyData[index]['Total']);
+                            Timer(Duration(milliseconds: 1000),()=>{
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowMonthlyIncome(userUid,monthlyData[index]['Id'], monthlyData[index]['Month'], year,monthlyData[index]['Salary'],monthlyData[index]['Business'],monthlyData[index]['House Rent'],monthlyData[index]['Car Rent'],monthlyData[index]['Interest'],monthlyData[index]['Total'],lineDataList))),
+                            });
                           },
                           title: Text(year,style: TextStyle(fontSize: 24, fontFamily: 'Teko'),),
                           subtitle: Text(monthlyData[index]['Month'],style: TextStyle(fontSize: 20, fontFamily: 'Teko'),),
@@ -141,7 +191,7 @@ class MonthlyIncomeState extends State<MonthlyIncome>{
                       );
                     },
 
-                  ):Center(child: Text("No income is available for this selected year"),)
+                  ):Text("No income is available for this selected year",textAlign:TextAlign.center,style: TextStyle(fontSize: 36,fontFamily: 'Teko',color:Colors.black))
               ),
             ],
           ),
@@ -151,6 +201,20 @@ class MonthlyIncomeState extends State<MonthlyIncome>{
 
     );
   }
+  weeklyData(String userUid,String month,String year) async {
+    dynamic resultant = await ReadData().readDailyData('daily_income',userUid, month, year);
+
+    if (resultant == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        lineDataList = resultant;
+        print("First:"+'${lineDataList.length}');
+      });
+
+    }
+  }
+
 
 
 
@@ -180,17 +244,17 @@ class MonthlyIncomeState extends State<MonthlyIncome>{
     });
   }
 
-  // monthlyExpensesDataList(String userUid,String year) async{
-  //   dynamic resultant = await ReadData().readMonthlyData(userUid,year);
-  //
-  //   if (resultant == null) {
-  //     print('Unable to retrieve');
-  //   } else {
-  //     setState(() {
-  //       monthlyData = resultant;
-  //     });
-  //   }
-  // }
+  monthlyExpensesDataList(String userUid,String year) async{
+    dynamic resultant = await ReadData().readMonthlyData('monthly_income',userUid,year);
+
+    if (resultant == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        monthlyData = resultant;
+      });
+    }
+  }
 
 }
 

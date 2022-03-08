@@ -208,50 +208,50 @@ class _HomePageState extends State<Home> with SingleTickerProviderStateMixin{
                   SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                      padding: EdgeInsets.only(right: 25),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          "Forget password?",
-                          style: TextStyle(
-                              color: Color.fromRGBO(49, 39, 79, 1),
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Teko"),
-                        ),
-                      ),
-
-                  ),
+                  // Padding(
+                  //     padding: EdgeInsets.only(right: 25),
+                  //     child: Align(
+                  //       alignment: Alignment.centerRight,
+                  //       child: Text(
+                  //         "Forget password?",
+                  //         style: TextStyle(
+                  //             color: Color.fromRGBO(49, 39, 79, 1),
+                  //             fontSize: 24,
+                  //             fontWeight: FontWeight.w400,
+                  //             fontFamily: "Teko"),
+                  //       ),
+                  //     ),
+                  //
+                  // ),
                   SizedBox(
                     height: 10,
                   ),
-              Container(
-                    width: width1,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(left: 20),
-                    child: Row(
-                      children: <Widget>[
-                        Theme(
-                          data: ThemeData(unselectedWidgetColor: Colors.white),
-                          child: Checkbox(
-                            value: _rememberMe,
-                            checkColor: Color.fromRGBO(49, 39, 79, 1),
-                            activeColor: Colors.white,
-                            onChanged: (value) {
-                              setState(() {
-                                _rememberMe = value;
-                              });
-                            },
-                          ),
-                        ),
-                        Text(
-                          "Remember me",
-                          style: TextStyle(color: Colors.white, fontSize: 24,fontFamily: "Teko"),
-                        )
-                      ],
-                    ),
-                  ),
+              // Container(
+              //       width: width1,
+              //       alignment: Alignment.center,
+              //       padding: EdgeInsets.only(left: 20),
+              //       child: Row(
+              //         children: <Widget>[
+              //           Theme(
+              //             data: ThemeData(unselectedWidgetColor: Colors.white),
+              //             child: Checkbox(
+              //               value: _rememberMe,
+              //               checkColor: Color.fromRGBO(49, 39, 79, 1),
+              //               activeColor: Colors.white,
+              //               onChanged: (value) {
+              //                 setState(() {
+              //                   _rememberMe = value;
+              //                 });
+              //               },
+              //             ),
+              //           ),
+              //           Text(
+              //             "Remember me",
+              //             style: TextStyle(color: Colors.white, fontSize: 24,fontFamily: "Teko"),
+              //           )
+              //         ],
+              //       ),
+              //     ),
 
                   SizedBox(
                     height: 10,
@@ -336,63 +336,63 @@ class _HomePageState extends State<Home> with SingleTickerProviderStateMixin{
                           SizedBox(height: 10,),
                                   Text(error),
                                   SizedBox(height: 5,),
-                                  Text(
-                                  "-OR-",
-                                  style: TextStyle(color:
-                                   Colors.black87, fontSize: 28,fontFamily: "Teko"),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "Login with",
-                            style: TextStyle(color: Colors.black87, fontSize: 32,fontFamily: "Teko"),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                    //shape: BoxShape.circle,
-                                  borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 6.0,
-                                          offset: Offset(5, 5))
-                                    ],
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/facebook.png'),
-                                    )),
-                              ),
-                              Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                    //shape: BoxShape.circle,
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 6.0,
-                                          offset: Offset(5, 5))
-                                    ],
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/google.png'),
-                                    )),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 15,),
+                          //         Text(
+                          //         "-OR-",
+                          //         style: TextStyle(color:
+                          //          Colors.black87, fontSize: 28,fontFamily: "Teko"),
+                          // ),
+                          // SizedBox(
+                          //   height: 5,
+                          // ),
+                          // Text(
+                          //   "Login with",
+                          //   style: TextStyle(color: Colors.black87, fontSize: 32,fontFamily: "Teko"),
+                          // ),
+                          // SizedBox(
+                          //   height: 15,
+                          // ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: <Widget>[
+                          //     Container(
+                          //       height: 45,
+                          //       width: 45,
+                          //       decoration: BoxDecoration(
+                          //           //shape: BoxShape.circle,
+                          //         borderRadius: BorderRadius.circular(5),
+                          //           color: Colors.white,
+                          //           boxShadow: [
+                          //             BoxShadow(
+                          //                 color: Colors.black26,
+                          //                 blurRadius: 6.0,
+                          //                 offset: Offset(5, 5))
+                          //           ],
+                          //           image: DecorationImage(
+                          //             image: AssetImage(
+                          //                 'assets/images/facebook.png'),
+                          //           )),
+                          //     ),
+                          //     Container(
+                          //       height: 45,
+                          //       width: 45,
+                          //       decoration: BoxDecoration(
+                          //           //shape: BoxShape.circle,
+                          //           color: Colors.white,
+                          //           borderRadius: BorderRadius.circular(5),
+                          //           boxShadow: [
+                          //             BoxShadow(
+                          //                 color: Colors.black26,
+                          //                 blurRadius: 6.0,
+                          //                 offset: Offset(5, 5))
+                          //           ],
+                          //           image: DecorationImage(
+                          //             image:
+                          //                 AssetImage('assets/images/google.png'),
+                          //           )),
+                          //     ),
+                          //   ],
+                          // ),
+                          // SizedBox(height: 15,),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,

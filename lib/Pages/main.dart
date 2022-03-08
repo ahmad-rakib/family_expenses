@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:family_expenses/Pages/showDailyExpensesDetails.dart';
+import 'package:family_expenses/Pages/family.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         //home: MyHomePage(),
-        home:ShowDailyDetails(),
+        home: FamilyMember(),
 
     );
   }
@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _checkConnection() async{
+    void _checkConnection() async{
     var result =await (Connectivity().checkConnectivity());
     if(result == ConnectivityResult.none){
       showDialog(
@@ -138,13 +138,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class ChooseRoute extends StatefulWidget
-{
-  @override
-  _ChooseRouteState createState() => _ChooseRouteState();
-}
+// class ChooseRoute extends StatefulWidget
+// {
+//   @override
+//   _ChooseRouteState createState() => _ChooseRouteState();
+// }
 
-class _ChooseRouteState extends State<ChooseRoute>{
+class ChooseRoute extends StatelessW{
 
 
   @override

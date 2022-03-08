@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:family_expenses/DataBase/database_readData.dart';
 import 'package:family_expenses/Pages/addMonthlyExpenses.dart';
-import 'package:family_expenses/Pages/showDailyExpensesDetails.dart';
+import 'package:family_expenses/Pages/expenses.dart';
+import 'package:family_expenses/Pages/showMonthlyExpensesDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,16 +21,21 @@ class _MonthlyExpenses extends State<MonthlyExpenses>{
 
   List monthlyData=[];
 
+  List barDataList=[];
+
   String error, month, year, userUid;
 
   User user=FirebaseAuth.instance.currentUser;
 
   final formKey= GlobalKey<FormState>();
 
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     currentUserId();
 
   }
@@ -42,7 +50,42 @@ class _MonthlyExpenses extends State<MonthlyExpenses>{
       child: SafeArea(
         child: Column(
           children: [
-            Text('Monthly Expenses',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 1), fontFamily: 'Teko'),),
+            SizedBox(height: 5,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap:(){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Expenses()));
+                      //Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage(userData['FirstName']+' '+userData['LastName'], userData['Image'])));
+                    },
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 40,
+                      width: 35,
+                      margin: EdgeInsets.only(left: 5),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(flex:9,child: Text('Monthly Expenses',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 1), fontFamily: 'Teko'),)),
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                )
+              ],
+            ),
+            SizedBox(height: 5,),
             Container(
               //color: Colors.black,
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -135,7 +178,10 @@ class _MonthlyExpenses extends State<MonthlyExpenses>{
                     return Card(
                       child:  ListTile(
                         onTap: (){
-                         // Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowDailyDetails("userId",monthlyData[index]['Id'], month, year)));
+                          weeklyData(userUid, monthlyData[index]['Month'], year);
+                          Timer(Duration(milliseconds: 1000),()=>{
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowMonthlyExpenses(userUid,monthlyData[index]['Id'], monthlyData[index]['Month'], year,monthlyData[index]['HouseRent'],monthlyData[index]['Utility'],monthlyData[index]['Services'],monthlyData[index]['Loan'],monthlyData[index]['Deposit'],monthlyData[index]['Education'],monthlyData[index]['Festivals'],monthlyData[index]['Travel'],monthlyData[index]['Others'],monthlyData[index]['Total'],barDataList))),
+                          });
                         },
                          title: Text(year,style: TextStyle(fontSize: 24, fontFamily: 'Teko'),),
                          subtitle: Text(monthlyData[index]['Month'],style: TextStyle(fontSize: 20, fontFamily: 'Teko'),),
@@ -144,7 +190,7 @@ class _MonthlyExpenses extends State<MonthlyExpenses>{
                     );
                   },
 
-                ):Center(child: Text("No expenses is available for this selected year"),)
+                ):Text("No expenses is available for this selected year",textAlign:TextAlign.center,style: TextStyle(fontSize: 36,fontFamily: 'Teko',color:Colors.black),)
             ),
           ],
         ),
@@ -155,6 +201,19 @@ class _MonthlyExpenses extends State<MonthlyExpenses>{
   );
   }
 
+  weeklyData(String userUid,String month,String year) async {
+    dynamic resultant = await ReadData().readDailyData('daily_expenses',userUid, month, year);
+
+    if (resultant == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        barDataList = resultant;
+       print("First:"+'${barDataList.length}');
+      });
+
+    }
+  }
 
 
   Widget __addMonthlyExpenses()=>FloatingActionButton(
@@ -184,7 +243,7 @@ class _MonthlyExpenses extends State<MonthlyExpenses>{
   }
 
    monthlyExpensesDataList(String userUid,String year) async{
-    dynamic resultant = await ReadData().readMonthlyData(userUid,year);
+    dynamic resultant = await ReadData().readMonthlyData('monthly_expenses',userUid,year);
 
     if (resultant == null) {
       print('Unable to retrieve');

@@ -7,6 +7,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:family_expenses/Pages/expenses.dart';
 import 'package:family_expenses/Widget/RecentExpense.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'income.dart';
 
@@ -38,6 +40,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
 
   Map<String, dynamic> userData;
 
+  var temp,description, currently,windSpeed,humidity;
 
 
   double screenWidth, screenHeight;
@@ -50,6 +53,8 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
   @override
   void initState() {
     super.initState();
+
+    getWeather();
     FirebaseAuth.instance
         .authStateChanges()
         .listen((User user) {
@@ -94,12 +99,8 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
     screenHeight = size.height;
     screenWidth = size.width;
 
-    // TODO: implement build
     return WillPopScope(
-      onWillPop: ()async{
-        Navigator.pop(context,true);
-        return false;
-      },
+      onWillPop: _onWillPop,
       child: Scaffold(
          backgroundColor: Color.fromRGBO(193, 214, 233, 0.85),
         body: Stack(
@@ -202,14 +203,14 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                         ),
                       ),
                       SizedBox(height: 20,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(Icons.event,color: Colors.white,size: 24,),
-                          SizedBox(width: 5,),
-                          Text('Budget', style: TextStyle(fontSize: 20,color: Colors.white, fontFamily: 'Teko'),),
-                        ],
-                      ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: <Widget>[
+                      //     Icon(Icons.event,color: Colors.white,size: 24,),
+                      //     SizedBox(width: 5,),
+                      //     Text('Budget', style: TextStyle(fontSize: 20,color: Colors.white, fontFamily: 'Teko'),),
+                      //   ],
+                      // ),
 
                     ],
                   ),
@@ -223,21 +224,21 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                     mainAxisAlignment: MainAxisAlignment.start,
                     //mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                          Text(
-                            'Settings',
-                            style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'Teko'),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 30,),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: <Widget>[
+                      //     Icon(
+                      //       Icons.settings,
+                      //       color: Colors.white,
+                      //       size: 24,
+                      //     ),
+                      //     Text(
+                      //       'Settings',
+                      //       style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'Teko'),
+                      //     ),
+                      //   ],
+                      // ),
+                      SizedBox(width: 150,),
                       InkWell(
                         onTap:()async{
                           await FirebaseAuth.instance.signOut();
@@ -343,6 +344,7 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                  ),
                  Container(
                    margin: EdgeInsets.only(left: 15,right: 15,top:0),
+                   height: 220,
                    decoration: BoxDecoration(
                      color: Colors.white,
                      boxShadow: [
@@ -353,18 +355,19 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                        )
 
                      ],
-                     borderRadius: BorderRadius.all(Radius.circular(15)),
+                     borderRadius: BorderRadius.all(Radius.circular(10)),
                    ),
                    child: Row(
                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      children: <Widget>[
                        Expanded(
-                         flex: 2,
+                         flex: 3,
                          child: Container(
                            alignment: Alignment.centerLeft,
                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 1),
                            child: Column(
                              children: <Widget>[
+                               SizedBox(height: 75,),
                                Container(
                                  width: 75,
                                  padding: EdgeInsets.all(5),
@@ -397,7 +400,19 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                                    ],
                                  ),
                                ),
-                               Text('29◦C', style: TextStyle(fontSize: 24,color: Colors.grey,fontFamily: 'Teko'),)
+                               Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   Icon(
+                                     Icons.thermostat_auto_sharp,
+                                     size: 24,
+                                     color: Colors.deepOrange,
+                                   ),
+                                   Text(temp!=null?temp.toString()+"\u00B0"+"C":"Loading", style: TextStyle(fontSize: 24,color: Colors.black,fontFamily: 'Teko'),),
+                                 ],
+                               ),
+                               Text(description!=null?description.toString():"Loading", style: TextStyle(fontSize: 24,color: Colors.black,fontFamily: 'Teko'),),
+
                              ],
                            ),
                          ),
@@ -410,21 +425,46 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                              children: <Widget>[
                                Align(
                                    alignment:Alignment.centerLeft,
-                                   child: Text(_weekDay[now.weekday-1],style: TextStyle(fontSize: 30,color: Colors.grey,fontFamily: 'Teko'))),
+                                   child: Text(_weekDay[now.weekday-1],style: TextStyle(fontSize: 30,color: Colors.black,fontFamily: 'Teko'))),
                                Align(
                                    alignment:Alignment.centerLeft,
-                                   child: Text('${now.day}'+' '+_selectMonth[now.month-1]+','+' '+'${now.year}',style: TextStyle(fontSize: 20,color: Colors.grey,fontFamily: 'Teko'))),
+                                   child: Text('${now.day}'+' '+_selectMonth[now.month-1]+','+' '+'${now.year}',style: TextStyle(fontSize: 20,color: Colors.black,fontFamily: 'Teko'))),
                              ],
                            ),
                          ),
                        ),
                        Expanded(
-                         flex: 1,
+                         flex: 2,
                          child: Container(
-                           child: Icon(
-                             Icons.arrow_forward_ios,
-                             size: 24,
-                             color: Colors.grey,
+                           child: Column(
+                             children: [
+                               SizedBox(height: 100,),
+                               Text(currently!=null?currently.toString():"Loading", style: TextStyle(fontSize: 24,color: Colors.black,fontFamily: 'Teko'),),
+                               Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   Text(humidity!=null?humidity.toString():"Loading", style: TextStyle(fontSize: 24,color: Colors.black,fontFamily: 'Teko'),),
+                                   Icon(
+                                     Icons.water,
+                                     size: 24,
+                                     color: Colors.green,
+                                   ),
+
+                                 ],
+                               ),
+                               Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   Text(windSpeed!=null?windSpeed.toString():"Loading", style: TextStyle(fontSize: 24,color: Colors.black,fontFamily: 'Teko'),),
+                                   Icon(
+                                     Icons.air,
+                                     size: 24,
+                                     color: Colors.blue,
+                                   ),
+                                 ],
+                               ),
+
+                             ],
                            ),
                          ),
                        )
@@ -434,32 +474,32 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
                    ),
                  ),
                  SizedBox(height: 250,),
-                 Padding(
-                   padding: const EdgeInsets.only(left:15),
-                   child: Align(
-                     alignment: Alignment.centerLeft,
-                       child: Text('Recent', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
-                 ),
-                 Padding(
-                   padding: const EdgeInsets.only(left:15),
-                   child: Align(
-                       alignment: Alignment.centerLeft,
-                       child: Text('Daily expenses', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
-                 ),
-                 Container(
-                     height:200,
-                     child: ShowDailyExpenses()),
-                 SizedBox(height:5,),
-                 Padding(
-                   padding: const EdgeInsets.only(left:15),
-                   child: Align(
-                       alignment: Alignment.centerLeft,
-                       child: Text('Monthly expenses', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
-                 ),
-                 Container(
-                     height:200,
-                     child: MonthlyExpenses())
-
+                 // Padding(
+                 //   padding: const EdgeInsets.only(left:15),
+                 //   child: Align(
+                 //     alignment: Alignment.centerLeft,
+                 //       child: Text('Recent', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
+                 // ),
+                 // Padding(
+                 //   padding: const EdgeInsets.only(left:15),
+                 //   child: Align(
+                 //       alignment: Alignment.centerLeft,
+                 //       child: Text('Daily expenses', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
+                 // ),
+                 // Container(
+                 //     height:200,
+                 //     child: ShowDailyExpenses()),
+                 // SizedBox(height:5,),
+                 // Padding(
+                 //   padding: const EdgeInsets.only(left:15),
+                 //   child: Align(
+                 //       alignment: Alignment.centerLeft,
+                 //       child: Text('Monthly expenses', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontFamily: 'Teko',color: Color.fromRGBO(49, 49, 79, 1),),)),
+                 // ),
+                 // Container(
+                 //     height:200,
+                 //     child: MonthlyExpenses())
+                 //
 
                ],
              ),
@@ -469,6 +509,43 @@ class _ProfilePageState  extends State<ProfilePage> with SingleTickerProviderSta
    ),
    );
  }
+
+  Future getWeather() async {
+    var url= Uri.parse("http://api.openweathermap.org/data/2.5/weather?q=Sylhet&units=metric&appid=be05c237f3cc8d4e6549d42564214276");
+    http.Response response= await http.get(url);
+    var result =jsonDecode(response.body);
+    setState(() {
+      this.temp=result['main']['temp'];
+      this.description=result['weather'][0]['description'];
+      this.currently=result['weather'][0]['main'];
+      this.humidity=result['main']['humidity'];
+      this.windSpeed=result['wind']['speed'];
+
+    });
+  }
+
+  Future<bool> _onWillPop() async {
+
+    // This dialog will exit your app on saying yes
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('Do you want to exit an App'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ??
+        false;
+  }
 
 }
 

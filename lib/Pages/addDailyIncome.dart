@@ -60,9 +60,33 @@ class _AddDailyIncome extends State<AddDailyIncome>{
             children: [
               Column(
                   children:<Widget> [
-                    SizedBox(
-                      height :height1*0.10,
+                    SizedBox(height: 10,),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap:(){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>DailyIncome()));
+                            //Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage(userData['FirstName']+' '+userData['LastName'], userData['Image'])));
+                          },
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 40,
+                            width: 35,
+                            margin: EdgeInsets.only(left: 5),
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: height1*.05,),
                     Text("Store Daily Income",style: TextStyle(fontSize: 36, fontFamily: 'Teko',color: Color.fromRGBO(25, 25, 112, 1)),),
                     SizedBox(height: 10,),
                     Padding(

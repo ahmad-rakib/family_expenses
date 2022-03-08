@@ -1,4 +1,6 @@
+import 'package:family_expenses/DataBase/database_readData.dart';
 import 'package:family_expenses/Pages/addDailyIncome.dart';
+import 'package:family_expenses/Pages/income.dart';
 import 'package:family_expenses/Pages/showDailyExpensesDetails.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +48,43 @@ class DailyIncomeState extends State<DailyIncome>{
         child: SafeArea(
           child: Column(
             children: [
-              Text('Daily Income',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 1), fontFamily: 'Teko'),),
-              Container(
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Income()));
+                        //Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage(userData['FirstName']+' '+userData['LastName'], userData['Image'])));
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 40,
+                        width: 35,
+                        margin: EdgeInsets.only(left: 5),
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.blueGrey,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(flex:9,child: Text('Daily Income',textAlign: TextAlign.center,style: TextStyle(fontSize: 36, color: Color.fromRGBO(15, 15, 145, 0.95), fontFamily: 'Teko'),)),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  )
+                ],
+              ),
+              SizedBox(height: 5,),
+               Container(
                 //color: Colors.black,
                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child:Row(
@@ -153,8 +190,8 @@ class DailyIncomeState extends State<DailyIncome>{
                           child: MaterialButton(
                             child: Icon(Icons.search_sharp,size: 30, color: Colors.white,),
                             onPressed: (){
-                              //print(month +" "+ year);
-                             // dailyExpensesDataList(userUid,month,year);
+                              print(month +" "+ year);
+                              dailyExpensesDataList(userUid,month,year);
                             },
                             color: Colors.deepOrange.shade500,
                             shape: RoundedRectangleBorder(
@@ -178,12 +215,9 @@ class DailyIncomeState extends State<DailyIncome>{
                     itemBuilder: (context , index){
                       return Card(
                         child:  ListTile(
-                          onTap: (){
-                            //Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowDailyDetails("UserId",dailyData[index]['Id'], month, year)));
-                          },
                           title: Text(dailyData[index]['Date'],style: TextStyle(fontSize: 24, fontFamily: 'Teko'),),
                           subtitle: Text(dailyData[index]['Month'],style: TextStyle(fontSize: 20, fontFamily: 'Teko'),),
-                          trailing: Text('${dailyData[index]['Total']}', style: TextStyle(fontSize: 24, fontFamily: 'Teko'),),
+                          trailing: Text('${dailyData[index]['Amount']}', style: TextStyle(fontSize: 24, fontFamily: 'Teko'),),
                         ),
                       );
                     },
@@ -226,15 +260,14 @@ class DailyIncomeState extends State<DailyIncome>{
     });
   }
 
-  // dailyExpensesDataList(String id, String month, String year) async {
-  //   dynamic resultant = await ReadData().readDailyData(id,month,year);
-  //
-  //   if (resultant == null) {
-  //     print('Unable to retrieve');
-  //   } else {
-  //     setState(() {
-  //       dailyData = resultant;
-  //     });
-  //   }
-  // }
+  dailyExpensesDataList(String id, String month, String year) async {
+    dynamic resultant = await ReadData().readDailyData('daily_income',id,month,year);
+    if (resultant == null) {
+      print('Unable to retrieve');
+    } else {
+      setState(() {
+        dailyData = resultant;
+      });
+    }
+  }
 }

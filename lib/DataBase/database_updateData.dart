@@ -37,7 +37,7 @@ class UpdateUserData{
       });
   }
 
-  Future addDailyExpense(String date, String conveyance, String shopping , String medical,String grocery, String maintenance, String others, String userUid, String id, String day, String month, String year)
+  Future addDailyExpense(String date, String conveyance, String shopping , String medical,String grocery, String food ,String maintenance, String others, String userUid, String id, String day, String month, String year)
   async {
 
     var xConveyance=int.parse(conveyance);
@@ -52,6 +52,11 @@ class UpdateUserData{
     var xGrocery=int.parse(grocery);
     assert(xGrocery is int);
 
+
+    var xFood=int.parse(food);
+    assert(xFood is int);
+
+
     var xMaintenance=int.parse(maintenance);
     assert(xMaintenance is int);
 
@@ -61,16 +66,18 @@ class UpdateUserData{
     var xDay=int.parse(day);
     assert(xDay is int);
 
-    int total=xConveyance+xShopping+xMedical+xGrocery+xMaintenance+xOthers;
+    int total=xConveyance+xShopping+xMedical+xGrocery+xFood+xMaintenance+xOthers;
     return await dailyExpensesRef.doc(userUid).collection(year).doc(id).set({
       'Day':xDay,
       'Month':month,
       'Date':date,
-      'Salary':xConveyance,
-      'Business':xShopping,
-      'House Rent':xMedical,
-      'Car Rent':xGrocery,
-      'Interest':xMaintenance,
+      'Conveyance':xConveyance,
+      'Shopping':xShopping,
+      'Medical':xMedical,
+      'Grocery':xGrocery,
+      'Food':xFood,
+      'Maintenance':xMaintenance,
+      'Others':xOthers,
       'Total':total,
       'Id':id,
     });

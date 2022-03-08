@@ -1,7 +1,6 @@
 import 'package:family_expenses/DataBase/database_updateData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:family_expenses/Data/user.dart';
-import 'package:family_expenses/DataBase/database_updateData.dart';
 
 UserDetails _userFromFirebaseUser(User user) {
   return user != null ? UserDetails(uid: user.uid) : null;
@@ -12,7 +11,7 @@ class UserAuthentication{
   final FirebaseAuth _auth= FirebaseAuth.instance;
 
   Future<String> currentUser() async {
-    User user = await FirebaseAuth.instance.currentUser;
+    User user =  FirebaseAuth.instance.currentUser;
     return user != null ? user.uid : null;
   }
 
@@ -38,20 +37,21 @@ Future registerNewUser(String firstName, String lastName, String gender, String 
 
 }
 
-Future signInUser(String email, String password) async {
+Future<String> signInUser(String email, String password) async {
   try {
     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password
     );
     User user=userCredential.user;
-    return user;
+    return "User";
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
       print('No user found for that email.');
     } else if (e.code == 'wrong-password') {
       print('Wrong password provided for that user.');
     }
+    return e.code;
   }
 }
 

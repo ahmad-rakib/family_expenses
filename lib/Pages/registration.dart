@@ -467,57 +467,57 @@ class _RegistrationPageRoute1  extends State<Registration>{
                           ),
 
                           SizedBox(height: 15,),
-                          Text(
-                            "-OR-", style: TextStyle(fontSize: 32,fontFamily: 'Teko', fontWeight: FontWeight.w400,
-                              color:Colors.black),
-                          ),
-                          //SizedBox(height: 5,),
-                          Text(
-                            "Register with", style: TextStyle(fontSize: 24,fontFamily: 'Teko', fontWeight: FontWeight.w400,
-                              color:Colors.black),
-                          ),
+                          // Text(
+                          //   "-OR-", style: TextStyle(fontSize: 32,fontFamily: 'Teko', fontWeight: FontWeight.w400,
+                          //     color:Colors.black),
+                          // ),
+                          // //SizedBox(height: 5,),
+                          // Text(
+                          //   "Register with", style: TextStyle(fontSize: 24,fontFamily: 'Teko', fontWeight: FontWeight.w400,
+                          //     color:Colors.black),
+                          // ),
                           SizedBox(height: 15,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                  //shape: BoxShape.circle,
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 6.0,
-                                          offset: Offset(5, 5))
-                                    ],
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/facebook.png'),
-                                    )),
-                              ),
-                              Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                  //shape: BoxShape.circle,
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 6.0,
-                                          offset: Offset(5, 5))
-                                    ],
-                                    image: DecorationImage(
-                                      image:
-                                      AssetImage('assets/images/google.png'),
-                                    )),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: <Widget>[
+                          //     Container(
+                          //       height: 45,
+                          //       width: 45,
+                          //       decoration: BoxDecoration(
+                          //         //shape: BoxShape.circle,
+                          //           borderRadius: BorderRadius.circular(5),
+                          //           color: Colors.white,
+                          //           boxShadow: [
+                          //             BoxShadow(
+                          //                 color: Colors.black26,
+                          //                 blurRadius: 6.0,
+                          //                 offset: Offset(5, 5))
+                          //           ],
+                          //           image: DecorationImage(
+                          //             image: AssetImage(
+                          //                 'assets/images/facebook.png'),
+                          //           )),
+                          //     ),
+                          //     Container(
+                          //       height: 45,
+                          //       width: 45,
+                          //       decoration: BoxDecoration(
+                          //         //shape: BoxShape.circle,
+                          //           color: Colors.white,
+                          //           borderRadius: BorderRadius.circular(5),
+                          //           boxShadow: [
+                          //             BoxShadow(
+                          //                 color: Colors.black26,
+                          //                 blurRadius: 6.0,
+                          //                 offset: Offset(5, 5))
+                          //           ],
+                          //           image: DecorationImage(
+                          //             image:
+                          //             AssetImage('assets/images/google.png'),
+                          //           )),
+                          //     ),
+                          //   ],
+                          // ),
                           SizedBox(height: 10,),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
